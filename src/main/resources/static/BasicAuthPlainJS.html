@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Basic Auth Plain JS</title>
+</head>
+<body>
+
+<script language="JavaScript">
+
+    function getStudent() {
+        var authHeaderVal = "Basic " + btoa("user:password1");
+
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            console.log(xmlHttp.responseText);
+            //callback(xmlHttp.responseText);
+        }
+        xmlHttp.open("GET", "http://localhost:8080/student/get", true); // true for asynchronous
+        xmlHttp.setRequestHeader('Authorization', authHeaderVal);
+        xmlHttp.send(null);
+    }
+
+    function getStudentTwo() {
+        var authHeaderVal = "Basic " + btoa("user:password2");
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            console.log(xmlHttp.responseText);
+            //callback(xmlHttp.responseText);
+        }
+        xmlHttp.open("GET", "http://localhost:8080/student/gettwo", true); // true for asynchronous
+        xmlHttp.setRequestHeader("Authorization", authHeaderVal);
+        xmlHttp.send(null);
+    }
+
+    function getStudentWithoutHeader() {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            console.log(xmlHttp.responseText);
+            //callback(xmlHttp.responseText);
+        }
+        xmlHttp.open("GET", "http://localhost:8080/student/gettwo", true); // true for asynchronous
+        xmlHttp.send(null);
+    }
+
+    function logOutStudent() {
+        console.log("Inside send request");
+
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 401){
+            var xmlHttp1 = new XMLHttpRequest();
+            xmlHttp1.onreadystatechange = function() {
+            if (xmlHttp1.readyState == 4 && xmlHttp1.status == 200)
+                console.log(xmlHttp.responseText);
+            }
+            xmlHttp1.open("GET", "http://localhost:8080/student/gettwo", true); // true for asynchronous
+            xmlHttp1.setRequestHeader("Authorization", "Basic d3Jvbmc6d3Jvbmc=");
+            xmlHttp1.send(null);
+            }
+        }
+        xmlHttp.open("GET", "http://localhost:8080/student/logout", true); // true for asynchronous
+        xmlHttp.send(null);
+    }
+</script>
+
+<button onclick="getStudent()" type="button">Simple http get call : password1</button><br/>
+<button onclick="getStudentTwo()" type="button">Simple http get call : password2</button><br/>
+<button onclick="getStudentWithoutHeader()" type="button">Get Student without header</button><br/>
+<button onclick="logOutStudent()" type="button">Logout Student</button>
+</body>
+</html>

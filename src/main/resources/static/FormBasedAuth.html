@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FormBasedAuth</title>
+</head>
+<body>
+<p>Form Based Auth</p>
+
+<script language="JavaScript">
+
+    function loginUser() {
+        console.log("Inside send request");
+
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            console.log(xmlHttp.responseText);
+            //callback(xmlHttp.responseText);
+        }
+        xmlHttp.open("POST", "http://localhost:8080/login", true); // true for asynchronous
+        var request = "username=user&password=password1";
+        xmlHttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xmlHttp.send(request);
+    }
+
+    function getStudentTwo() {
+        console.log("Inside send request");
+
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            console.log(xmlHttp.responseText);
+            //callback(xmlHttp.responseText);
+        }
+        xmlHttp.open("GET", "http://localhost:8080/user/gettwo", true); // true for asynchronous
+        xmlHttp.send(null);
+    }
+
+    function getAdminCall() {
+        console.log("Inside send request");
+
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            console.log(xmlHttp.responseText);
+            //callback(xmlHttp.responseText);
+        }
+        xmlHttp.open("GET", "http://localhost:8080/admin/get", true); // true for asynchronous
+        xmlHttp.send(null);
+    }
+
+    function logOutStudent() {
+        console.log("Inside send request");
+
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 401){
+            var xmlHttp1 = new XMLHttpRequest();
+            xmlHttp1.onreadystatechange = function() {
+            if (xmlHttp1.readyState == 4 && xmlHttp1.status == 200)
+                console.log(xmlHttp.responseText);
+            }
+            xmlHttp1.open("GET", "http://localhost:8080/user/gettwo", true); // true for asynchronous
+            xmlHttp1.setRequestHeader("Authorization", "Basic d3Jvbmc6d3Jvbmc=");
+            xmlHttp1.send(null);
+            }
+        }
+        xmlHttp.open("GET", "http://localhost:8080/student/logout", true); // true for asynchronous
+        xmlHttp.send(null);
+    }
+
+    function getCookie() {
+        console.log(document.cookie);
+        console.log('First');
+        console.log(readCookie('Cookie'));
+        console.log('Second');
+        console.log(readCookie('localhost'));
+        console.log('Third');
+        console.log(readCookie('JSESSIONID'));
+        console.log('Fourth');
+        console.log(readCookie());
+    }
+
+    (function(){
+    var cookies;
+
+    function readCookie(name,c,C,i){
+        console.log('Inside read cookie ' + name);
+        console.log(cookies);
+        if(cookies){
+            console.log('found');
+            console.log(cookies[name]);
+            return cookies[name];
+        }
+
+        c = document.cookie.split('; ');
+        console.log(c);
+        cookies = {};
+
+        for(i=c.length-1; i>=0; i--){
+           C = c[i].split('=');
+           cookies[C[0]] = C[1];
+        }
+        console.log(cookies[name]);
+        return cookies[name];
+    }
+
+    window.readCookie = readCookie; // or expose it however you want
+    })();
+</script>
+
+<button onclick="loginUser()" type="button">Login User : user: password1</button><br/>
+<button onclick="getStudentTwo()" type="button">Rest Get User Call</button><br/>
+<button onclick="getAdminCall()" type="button">Rest Get Admin Call</button><br/>
+<button onclick="logOutStudent()" type="button">Logout Student</button><br/>
+<button onclick="getCookie()" type="button">Read Cookie</button>
+</body>
+</html>
